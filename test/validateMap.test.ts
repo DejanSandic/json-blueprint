@@ -4,10 +4,12 @@ import * as validateMapExport from '../src/validators/validateMap';
 // Import inner functions used by the validateMap()
 import validateValue from '../src/validators/validateValue';
 import validateObject from '../src/validators/validateObject';
+import validateList from '../src/validators/validateList';
 
 // Mock inner functions used by the validateMap()
 jest.mock('../src/validators/validateValue');
 jest.mock('../src/validators/validateObject');
+jest.mock('../src/validators/validateList');
 
 const options = {};
 
@@ -45,8 +47,12 @@ test(
 		validateMap('testProp', { a: { type: String } }, options, { a: '1' });
 		validateMap('testProp', { a: { type: Boolean } }, options, { a: true });
 		validateMap('testProp', { a: { type: Array } }, options, { a: [ 1, 2 ] });
-		validateMap('testProp', { a: { type: Object } }, options, { a: { c: 1 } });
-		validateMap('testProp', { a: { type: Symbol } }, options, { a: Symbol.iterator });
+		validateMap('testProp', { a: { type: Object } }, options, {
+			a: { c: 1 }
+		});
+		validateMap('testProp', { a: { type: Symbol } }, options, {
+			a: Symbol.iterator
+		});
 
 		expect(validateValue).toBeCalledTimes(12);
 		expect(validateObject).not.toBeCalled();
@@ -56,11 +62,16 @@ test(
 	}
 );
 
-test('validateMap should invoke validateObject and itself recursively if validator is an object', () => {
+test('validateMap should invoke validateObject and itself recursively if validator is an object.', () => {
 	const mock = jest.spyOn(validateMapExport, 'default');
 	validateMap('testProp', { a: {} }, options, { a: {} });
 	expect(validateObject).toBeCalled();
 	expect(mock).toBeCalledTimes(2);
+});
+
+test('validateMap should invoke validateList if validator is an array.', () => {
+	validateMap('testProp', { a: [ String ] }, options, { a: [ 'Hello' ] });
+	expect(validateList).toBeCalledWith('testProp.a', String, {}, [ 'Hello' ]);
 });
 
 test('validateMap should throw an error if property on the blueprint is not of a valid type.', () => {
@@ -71,7 +82,7 @@ test('validateMap should throw an error if property on the blueprint is not of a
 	);
 });
 
-test('validateObject should invoke validate function (if provided) with the property name and the provided value.', () => {
+test('validateMap should invoke validate function (if provided) with the property name and the provided value.', () => {
 	const validateTest = jest.fn();
 
 	validateMap('testProp', { a: Number }, { validate: validateTest }, { a: 1 });
