@@ -12,7 +12,7 @@
 		"prebuild": "rimraf dist",
 		"build": "rollup --config",
 		"dev": "rollup --config --watch",
-		"lint:fix": "prettier-eslint \"src/*\" \"test/*\" --write"
+		"lint:fix": "prettier-eslint \"src/index.ts\" \"src/validators/*\" \"test/*\" --write"
 	},
 	"pre-commit": [ "test", "lint:fix" ],
 	"repository": {
