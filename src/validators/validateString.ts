@@ -20,7 +20,9 @@ export default function validateString (prop: string, options: StringOptions, va
    const { minLength, maxLength, match, required = true, validate } = options;
 
    if (typeof value === 'undefined') {
-      if (required) { throw new Error(`Property ${prop} is defined on the schema but it is missing on the provided data.`); } else return true;
+      if (required) {
+         throw new Error(`Property ${prop} is defined on the schema but it is missing on the provided data.`);
+      } else return true;
    }
 
    if (typeof value !== 'string') {

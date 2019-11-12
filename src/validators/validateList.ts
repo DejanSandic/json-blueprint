@@ -37,7 +37,9 @@ export default function validateList (parentProp: string, validator: any, option
 
    // Throw an error if data is not provided
    if (typeof data === 'undefined') {
-      if (required) { throw new Error(`Property ${parentProp} is defined on the blueprint but it is missing on the provided data.`); } else return true;
+      if (required) {
+         throw new Error(`Property ${parentProp} is defined on the blueprint but it is missing on the provided data.`);
+      } else return true;
    }
 
    // Throw an error if the provided data is not an array
