@@ -1,19 +1,19 @@
 interface KeyValue {
-	[key: string]: any;
+   [key: string]: any;
 }
 
 class Blueprint {
-	_schema: KeyValue;
+   _schema: KeyValue;
 
-	constructor(schema: KeyValue) {
-		this._schema = schema;
-	}
+   constructor (schema: KeyValue) {
+      this._schema = schema;
+   }
 
-	create(schema: KeyValue) {
-		return new Blueprint(schema);
-	}
+   create (schema: KeyValue) {
+      return new Blueprint(schema);
+   }
 
-	validate(data: KeyValue) {}
+   validate (data: KeyValue) {}
 }
 
 export default Blueprint;
