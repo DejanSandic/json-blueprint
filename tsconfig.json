@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"moduleResolution": "node",
 		"allowJs": false,
-		"target": "es5",
+		"target": "esnext",
 		"lib": ["dom", "es2015"],
 		"alwaysStrict": true,
 		"allowUnreachableCode": false,

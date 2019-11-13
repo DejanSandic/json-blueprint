@@ -14,10 +14,7 @@
 		"dev": "rollup --config --watch",
 		"lint:fix": "prettier-eslint \"src/index.ts\" \"src/validators/*\" \"test/*\" --write"
 	},
-	"pre-commit": [
-		"test",
-		"lint:fix"
-	],
+	"pre-commit": [ "test", "lint:fix" ],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/DejanSandic/json-blueprint.git"
@@ -43,6 +40,7 @@
 		"rimraf": "^2.6.3",
 		"rollup": "^1.15.6",
 		"rollup-plugin-babel": "^4.3.2",
+		"rollup-plugin-license": "^0.12.1",
 		"rollup-plugin-terser": "^5.0.0",
 		"rollup-plugin-typescript2": "^0.22.0",
 		"ts-jest": "^24.0.2",
