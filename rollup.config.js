@@ -1,7 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import license from 'rollup-plugin-license';
-
 import path from 'path';
 
 export default {
