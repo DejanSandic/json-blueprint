@@ -56,7 +56,7 @@ export default function validateList (parentProp: string, validator: any, option
       throw new Error(`Array ${parentProp} can contain maximum of ${maxLength} items, ${data.length} items found.`);
    }
 
-   // Invoke validator function if provided
+   // Invoke the validator function if provided
    if (validate) {
       if (typeof validate === 'function') validate(parentProp, data);
       else {
@@ -66,55 +66,46 @@ export default function validateList (parentProp: string, validator: any, option
       }
    }
 
-   // Create prop for the array
-   const prop = `the ${parentProp} array item`;
+   data.forEach((value: any, index) => {
+      // Create prop for the array
+      const prop = `${parentProp}[${index}]`;
 
-   /**
-    * If validator is constructor (String, Object, etc.)
-    * pass the prop, validator, empty options object and each item
-    * in the data array and to the validateValue() function
-    */
-   if (isTypeConstructor(validator)) {
-      data.forEach((value: any) => {
-         validateValue(prop, validator, {}, value);
-      });
-      return;
-   }
+      /**
+       * If validator is constructor (String, Object, etc.)
+       * pass the prop, validator, empty options object and each item
+       * in the data array and to the validateValue() function
+       */
+      if (isTypeConstructor(validator)) {
+         return validateValue(prop, validator, {}, value);
+      }
 
-   /**
-    * If validator is an object which has type property which is
-    * the constructor, destructure constructor and options object
-    * from it and pass them with each item in the dataarray to the
-    * validateValue() function
-    */
-   if (isTypeConstructor(validator.type)) {
-      const { type, ...options } = validator;
-      data.forEach((value: any) => {
-         validateValue(prop, type, options, value);
-      });
-      return;
-   }
+      /**
+       * If validator is an object which has type property which is
+       * the constructor, destructure constructor and options object
+       * from it and pass them with each item in the dataarray to the
+       * validateValue() function
+       */
+      if (isTypeConstructor(validator.type)) {
+         const { type, ...options } = validator;
+         return validateValue(prop, type, options, value);
+      }
 
-   /**
-    * If validator is an array, go through each item in the data array, check
-    * is it an array and if it is pass it to the validateList() function
-    */
-   if (Array.isArray(validator)) {
-      data.forEach((value: any) => {
+      /**
+       * If validator is an array, go through each item in the data array, check
+       * is it an array and if it is pass it to the validateList() function
+       */
+      if (Array.isArray(validator)) {
          validateArray(prop, {}, value);
          return self.default(prop, validator[0], {}, value);
-      });
-      return;
-   }
+      }
 
-   /**
-    * If validator is an object, go through each item in the data array, check is
-    * it an object and if it is pass it to the validateMap() function
-    */
-   if (getType(validator) === 'object') {
-      data.forEach((value: any) => {
+      /**
+       * If validator is an object, go through each item in the data array, check is
+       * it an object and if it is pass it to the validateMap() function
+       */
+      if (getType(validator) === 'object') {
          validateObject(prop, {}, value);
-         validateMap(prop, validator, {}, value);
-      });
-   }
+         return validateMap(prop, validator, {}, value);
+      }
+   });
 }
