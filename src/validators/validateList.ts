@@ -34,7 +34,7 @@ export default function validateList (parentProp: string, validator: any, option
    const invalid = !Array.isArray(validator) && typeof validator !== 'function' && getType(validator) !== 'object';
    if (invalid) {
       throw new Error(
-         `Unsuported blueprint type for the property '${parentProp}' (${getType(validator)}).` +
+         `Unsuported blueprint type for the property ${parentProp} (${getType(validator)}).` +
             ` Check the documentation for the supported blueprint types.`
       );
    }
@@ -105,7 +105,7 @@ export default function validateList (parentProp: string, validator: any, option
             return type(prop, value, options);
          } else {
             throw new Error(
-               `Unsuported blueprint type for the property '${prop}' (${getType(type)}).` +
+               `Unsuported blueprint type for the property ${prop} (${getType(type)}).` +
                   ` Check the documentation for the supported blueprint types.`
             );
          }

@@ -87,12 +87,14 @@ test(
 );
 
 test('If provided validator is a function or an object with the type property whch is an object, validateMap should invoke it.', () => {
-   const validator = jest.fn();
+   const validator1 = jest.fn();
+   const validator2 = jest.fn();
 
-   validateMap('testProp', { a: validator }, options, { a: 1 });
-   validateMap('testProp', { a: { type: validator } }, options, { a: 1 });
+   validateMap('testProp', { a: validator1 }, options, { a: 1 });
+   validateMap('testProp', { a: { type: validator2, testOption: true } }, options, { a: 2 });
 
-   expect(validator).toBeCalledTimes(2);
+   expect(validator1).toBeCalledWith('testProp.a', 1, {});
+   expect(validator2).toBeCalledWith('testProp.a', 2, { testOption: true });
 });
 
 test('validateMap should invoke itself recursively if validator is an object.', () => {

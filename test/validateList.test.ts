@@ -16,27 +16,52 @@ jest.mock('../src/validators/validateMap');
 test('validateList should throw an error if the blueprint for the property is not of a valid type.', () => {
    const fn1 = () => validateList('testProp', undefined, {}, [1]);
    expect(fn1).toThrowError(
-      "Unsuported blueprint type for the property 'testProp' (undefined). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp (undefined). Check the documentation for the supported blueprint types.'
    );
+
    const fn2 = () => validateList('testProp', null, {}, [1]);
    expect(fn2).toThrowError(
-      "Unsuported blueprint type for the property 'testProp' (null). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp (null). Check the documentation for the supported blueprint types.'
    );
+
    const fn3 = () => validateList('testProp', 1, {}, [1]);
    expect(fn3).toThrowError(
-      "Unsuported blueprint type for the property 'testProp' (number). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp (number). Check the documentation for the supported blueprint types.'
    );
+
    const fn4 = () => validateList('testProp', 'Hello', {}, [1]);
    expect(fn4).toThrowError(
-      "Unsuported blueprint type for the property 'testProp' (string). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp (string). Check the documentation for the supported blueprint types.'
    );
+
    const fn5 = () => validateList('testProp', Symbol.iterator, {}, [1]);
    expect(fn5).toThrowError(
-      "Unsuported blueprint type for the property 'testProp' (symbol). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp (symbol). Check the documentation for the supported blueprint types.'
    );
-   const fn6 = () => validateList('testProp', { type: 1 }, {}, [1]);
+
+   const fn6 = () => validateList('testProp', { type: undefined }, {}, [1]);
    expect(fn6).toThrowError(
-      "Unsuported blueprint type for the property 'testProp[0]' (number). Check the documentation for the supported blueprint types."
+      'Unsuported blueprint type for the property testProp[0] (undefined). Check the documentation for the supported blueprint types.'
+   );
+
+   const fn7 = () => validateList('testProp', { type: null }, {}, [1]);
+   expect(fn7).toThrowError(
+      'Unsuported blueprint type for the property testProp[0] (null). Check the documentation for the supported blueprint types.'
+   );
+
+   const fn8 = () => validateList('testProp', { type: 1 }, {}, [1]);
+   expect(fn8).toThrowError(
+      'Unsuported blueprint type for the property testProp[0] (number). Check the documentation for the supported blueprint types.'
+   );
+
+   const fn9 = () => validateList('testProp', { type: 'Hello' }, {}, [1]);
+   expect(fn9).toThrowError(
+      'Unsuported blueprint type for the property testProp[0] (string). Check the documentation for the supported blueprint types.'
+   );
+
+   const fn10 = () => validateList('testProp', { type: Symbol.iterator }, {}, [1]);
+   expect(fn10).toThrowError(
+      'Unsuported blueprint type for the property testProp[0] (symbol). Check the documentation for the supported blueprint types.'
    );
 });
 
@@ -47,17 +72,17 @@ test('validateList should throw an error if the options object is not provided.'
    );
 });
 
-test('validateList should throw an error if the property defined on the blueprint is not provided.', () => {
+test('validateList should throw an error if property defined on the blueprint is not provided.', () => {
    const fnUndf = () => validateList('testProp', String, {}, undefined);
    expect(fnUndf).toThrowError('Property testProp is defined on the blueprint but it is missing on the provided data.');
 });
 
-test('validateList should not throw an error if the property defined on the blueprint is not provided, but it is not required.', () => {
+test('validateList should not throw an error if property defined on the blueprint is not provided, but it is not required.', () => {
    const fnUndf = () => validateList('testProp', String, { required: false }, undefined);
    expect(fnUndf).not.toThrow();
 });
 
-test('validateList should throw an error if the provided value is not an Array.', () => {
+test('validateList should throw an error if provided value is not an Array.', () => {
    const fn1 = () => validateList('testProp', Number, {}, 1);
    expect(fn1).toThrowError('Data passed for the property testProp is suposed to be an Array, number found instead.');
    const fn2 = () => validateList('testProp', Number, {}, 'Helo');
@@ -72,7 +97,7 @@ test('validateList should throw an error if the provided value is not an Array.'
    expect(fn6).toThrowError('Data passed for the property testProp is suposed to be an Array, null found instead.');
 });
 
-test('validateList should not throw an error if the provided value does match specified max and min length.', () => {
+test('validateList should not throw an error if provided value matches specified max and min length.', () => {
    const fn1 = () => validateList('testProp', Number, { minLength: 1, maxLength: 3 }, [1, 2]);
    const fn2 = () => validateList('testProp', Number, { minLength: 2 }, [1, 2]);
    const fn3 = () => validateList('testProp', Number, { maxLength: 3 }, [1, 2, 3]);
@@ -82,7 +107,7 @@ test('validateList should not throw an error if the provided value does match sp
    expect(fn3).not.toThrow();
 });
 
-test('validateList should throw an error if the provided value does not match specified min and max length.', () => {
+test('validateList should throw an error if provided value does not match specified min and max length.', () => {
    const fnShort = () => validateList('testProp', Number, { minLength: 2 }, [1]);
    expect(fnShort).toThrowError('Array testProp needs to have at least 2 items, 1 items found.');
 
@@ -157,22 +182,24 @@ test(
    }
 );
 
-test('If provided validator is a function or an object with the type property whch is an object, validateList should invoke it.', () => {
-   const validator = jest.fn();
+test('If provided validator is a function or an object with the type property whch is a function, validateList should invoke it.', () => {
+   const validator1 = jest.fn();
+   const validator2 = jest.fn();
 
-   validateList('testProp', validator, {}, [1]);
-   validateList('testProp', { type: validator }, {}, [1]);
+   validateList('testProp', validator1, {}, [1]);
+   validateList('testProp', { type: validator2, testOption: true }, {}, [2]);
 
-   expect(validator).toBeCalledTimes(2);
+   expect(validator1).toBeCalledWith('testProp[0]', 1, {});
+   expect(validator2).toBeCalledWith('testProp[0]', 2, { testOption: true });
 });
 
-test('validateList should invoke validateArray and itself recursively if validator is an array.', () => {
+test('validateList should invoke itself recursively if validator is an array.', () => {
    const mock = jest.spyOn(validateListExport, 'default');
    validateList('testProp', [String], {}, [['Hello']]);
    expect(mock).toBeCalledTimes(2);
 });
 
-test('validateList should invoke validateObject and validateMap validator is an object.', () => {
+test('validateList should invoke validateMap if validator is an object.', () => {
    validateList('testProp', { a: String }, {}, [{ a: 'Hello' }]);
    expect(validateMap).toBeCalled();
 });

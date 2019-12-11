@@ -23,13 +23,13 @@ test('Calling new Blueprint and Blueprint.create should create a new Blueprint i
    expect(blueprint2._blueprint).toBe(nameAndAgeBlueprint);
 });
 
-test('Calling new Blueprint should throw an error if provided blueprint name is not a string..', () => {
+test('Calling new Blueprint should throw an error if provided name is not a string..', () => {
    const val: any = 1;
    const fn = () => new Blueprint(val, val);
    expect(fn).toThrowError('Name of the blueprint is expected to be a string.');
 });
 
-test('Calling new Blueprint should throw an error if the provided schema is not an object.', () => {
+test('Calling new Blueprint should throw an error if provided schema is not an object.', () => {
    const val1: any = undefined;
    const fn1 = () => new Blueprint('Blueprint', val1);
    expect(fn1).toThrowError('Type of blueprint is expected to be an object, undefined found instead.');
@@ -51,7 +51,7 @@ test('Calling new Blueprint should throw an error if the provided schema is not 
    expect(fn5).toThrowError('Type of blueprint is expected to be an object, function found instead.');
 });
 
-test('Calling validate() method should throw an error if the provided data is not an object.', () => {
+test('Calling validate() method should throw an error if provided data is not an object.', () => {
    const blueprint = new Blueprint('Blueprint', nameAndAgeBlueprint);
 
    const val1: any = undefined;
