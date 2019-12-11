@@ -18,15 +18,6 @@ export function isObject (value: any): boolean {
 }
 
 /**
- * Chains property names for nested object structures ( parent.child )
- * @param { string | undefined } parentProp
- * @param { string } prop
- */
-export function combinePropNames (parentProp: string, prop: string): string {
-   return parentProp ? `${parentProp}.${prop}` : prop;
-}
-
-/**
  * Returns the type of the provided data including array and null
  *
  * @param { any } value value to be tested

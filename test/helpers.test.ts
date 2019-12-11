@@ -1,4 +1,4 @@
-import { isTypeConstructor, isObject, combinePropNames, getType } from '../src/validators/helpers';
+import { isTypeConstructor, isObject, getType } from '../src/validators/helpers';
 
 test('isTypeConstructor should return true', () => {
    expect(isTypeConstructor(String)).toBe(true);
@@ -39,12 +39,6 @@ test('isObject should return false', () => {
    expect(isObject(undefined)).toBe(false);
    expect(isObject(Symbol.iterator)).toBe(false);
    expect(isObject(Test)).toBe(false);
-});
-
-test('combinePropNames should return chained prop names', () => {
-   expect(combinePropNames('', 'prop')).toBe('prop');
-   expect(combinePropNames('parent', 'prop')).toBe('parent.prop');
-   expect(combinePropNames('parent.child', 'prop')).toBe('parent.child.prop');
 });
 
 test('getType should return type of the provided value', () => {
