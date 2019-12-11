@@ -1,8 +1,6 @@
 import validateValue from './validateValue';
-import validateObject from './validateObject';
-import validateArray from './validateArray';
 import validateMap from './validateMap';
-import { isTypeConstructor, getType } from './helpers';
+import { isTypeConstructor, isObject, getType } from './helpers';
 
 // Only way for jest to track recursive calls is for the
 // validateList to be imported into its own scope
@@ -23,11 +21,17 @@ interface ListOptions {
  * @param { object } options options object
  * @param { Object } obj
  */
-export default function validateList (parentProp: string, validator: any, options: ListOptions = {}, data: any) {
+export default function validateList (parentProp: string, validator: any, options: ListOptions, data: any) {
+   if (!isObject(options)) {
+      throw new Error(
+         `Options object is expected to be passed to the validateList function, ` + `${getType(options)} found instead.`
+      );
+   }
+
    const { required = true, minLength, maxLength, validate } = options;
 
    // Throw an error if validator is not constructor, object or array
-   const invalid = !isTypeConstructor(validator) && !Array.isArray(validator) && getType(validator) !== 'object';
+   const invalid = !Array.isArray(validator) && typeof validator !== 'function' && getType(validator) !== 'object';
    if (invalid) {
       throw new Error(
          `Unsuported blueprint type for the property '${parentProp}' (${getType(validator)}).` +
@@ -66,46 +70,57 @@ export default function validateList (parentProp: string, validator: any, option
       }
    }
 
+   // Go through each item in the data array
    data.forEach((value: any, index) => {
       // Create prop for the array
       const prop = `${parentProp}[${index}]`;
 
       /**
-       * If validator is constructor (String, Object, etc.)
-       * pass the prop, validator, empty options object and each item
-       * in the data array and to the validateValue() function
+       * If validator is a function
+       *
+       * If validator is a constructor (String, Object, etc.)
+       * pass the prop, validator, empty options object and value
+       * to the validateValue() function
+       *
+       * Else invoke the validator function with the required arguments
        */
-      if (isTypeConstructor(validator)) {
-         return validateValue(prop, validator, {}, value);
+      if (typeof validator === 'function') {
+         if (isTypeConstructor(validator)) return validateValue(prop, validator, {}, value);
+         return validator(prop, value, {});
       }
 
       /**
-       * If validator is an object which has type property which is
-       * the constructor, destructure constructor and options object
-       * from it and pass them with each item in the dataarray to the
-       * validateValue() function
+       * If validator is an object which has type property which is a
+       * function, destructure constructor and options object from it
+       *
+       * If type is a constructor, invoke the validateValue() function
+       *
+       * Else invoke the type function with the required arguments
        */
-      if (isTypeConstructor(validator.type)) {
+      if (isObject(validator) && 'type' in validator) {
          const { type, ...options } = validator;
-         return validateValue(prop, type, options, value);
+
+         if (typeof type === 'function') {
+            if (isTypeConstructor(type)) return validateValue(prop, type, options, value);
+            return type(prop, value, options);
+         } else {
+            throw new Error(
+               `Unsuported blueprint type for the property '${prop}' (${getType(type)}).` +
+                  ` Check the documentation for the supported blueprint types.`
+            );
+         }
       }
 
       /**
-       * If validator is an array, go through each item in the data array, check
-       * is it an array and if it is pass it to the validateList() function
+       * If validator is an array, invoke the validateList() function
        */
       if (Array.isArray(validator)) {
-         validateArray(prop, {}, value);
          return self.default(prop, validator[0], {}, value);
       }
 
       /**
-       * If validator is an object, go through each item in the data array, check is
-       * it an object and if it is pass it to the validateMap() function
+       * If validator is an object, the validateMap() function
        */
-      if (getType(validator) === 'object') {
-         validateObject(prop, {}, value);
-         return validateMap(prop, validator, {}, value);
-      }
+      return validateMap(prop, validator, {}, value);
    });
 }

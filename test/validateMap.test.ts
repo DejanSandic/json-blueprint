@@ -13,9 +13,38 @@ jest.mock('../src/validators/validateList');
 
 const options = {};
 
+test('validateMap should throw an error if the provided blueprint is not an object.', () => {
+   const blueprint: any = 1;
+   const fn1 = () => validateMap('testProp', blueprint, options, { a: 1 });
+   expect(fn1).toThrowError(
+      'Blueprint provided for the property testProp is expected to be an object, number found instead.'
+   );
+   const fn2 = () => validateMap('testProp', { a: { type: blueprint } }, options, { a: 1 });
+   expect(fn2).toThrowError(
+      'Unsuported blueprint type for the property testProp.a (number). Check the documentation for the supported blueprint types.'
+   );
+});
+
 test('validateMap should throw an error if the property defined on the blueprint is not provided.', () => {
    const fnUndf = () => validateMap('testProp', {}, options, undefined);
    expect(fnUndf).toThrowError('Property testProp is defined on the blueprint but it is missing on the provided data.');
+});
+
+test('validateMap should throw an error if the options object is not provided.', () => {
+   const fnUndf = () => validateMap('testProp', {}, undefined, undefined);
+   expect(fnUndf).toThrowError(
+      'Options object is expected to be passed to the validateMap function, undefined found instead.'
+   );
+});
+
+test('validateMap should throw an error if the provided data is not an object.', () => {
+   const validateFn = () => validateMap('testProp', {}, options, 1);
+   expect(validateFn).toThrowError('Value of the property testProp is expected to be an object, number found instead.');
+});
+
+test('validateMap should throw an error if the provided property is not defined on the blueprint.', () => {
+   const validateFn = () => validateMap('testProp', {}, options, { a: 1 });
+   expect(validateFn).toThrowError('Property testProp.a on the provided data is not defined on the blueprint.');
 });
 
 test(
@@ -26,11 +55,6 @@ test(
       expect(fnUndf).not.toThrow();
    }
 );
-
-test('validateMap should throw an error if the provided property is not defined on the blueprint.', () => {
-   const validateFn = () => validateMap('testProp', {}, options, { a: 1 });
-   expect(validateFn).toThrowError('Property testProp.a on the provided data is not defined on the blueprint.');
-});
 
 test(
    'validateMap should invoke validateValue if validator is the type constructor\n' +
@@ -62,10 +86,18 @@ test(
    }
 );
 
-test('validateMap should invoke validateObject and itself recursively if validator is an object.', () => {
+test('If provided validator is a function or an object with the type property whch is an object, validateMap should invoke it.', () => {
+   const validator = jest.fn();
+
+   validateMap('testProp', { a: validator }, options, { a: 1 });
+   validateMap('testProp', { a: { type: validator } }, options, { a: 1 });
+
+   expect(validator).toBeCalledTimes(2);
+});
+
+test('validateMap should invoke itself recursively if validator is an object.', () => {
    const mock = jest.spyOn(validateMapExport, 'default');
    validateMap('testProp', { a: {} }, options, { a: {} });
-   expect(validateObject).toBeCalled();
    expect(mock).toBeCalledTimes(2);
 });
 
@@ -77,7 +109,7 @@ test('validateMap should invoke validateList if validator is an array.', () => {
 test('validateMap should throw an error if property on the blueprint is not of a valid type.', () => {
    const validateFn = () => validateMap('testProp', { a: 1 }, options, { a: 1 });
    expect(validateFn).toThrowError(
-      `Unsuported blueprint type for the property 'testProp.a' (number).` +
+      `Unsuported blueprint type for the property testProp.a (number).` +
          ` Check the documentation for the supported blueprint types.`
    );
 });

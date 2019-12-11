@@ -1,4 +1,4 @@
-import { isTypeConstructor, combinePropNames, getType } from '../src/validators/helpers';
+import { isTypeConstructor, isObject, combinePropNames, getType } from '../src/validators/helpers';
 
 test('isTypeConstructor should return true', () => {
    expect(isTypeConstructor(String)).toBe(true);
@@ -8,7 +8,7 @@ test('isTypeConstructor should return true', () => {
    expect(isTypeConstructor(Object)).toBe(true);
 });
 
-test('isTypeConstructor should return true', () => {
+test('isTypeConstructor should return false', () => {
    function Test () {}
 
    expect(isTypeConstructor(Function)).toBe(false);
@@ -21,6 +21,24 @@ test('isTypeConstructor should return true', () => {
    expect(isTypeConstructor(undefined)).toBe(false);
    expect(isTypeConstructor(Symbol.iterator)).toBe(false);
    expect(isTypeConstructor(Test)).toBe(false);
+});
+
+test('isObject should return true', () => {
+   expect(isObject({})).toBe(true);
+});
+
+test('isObject should return false', () => {
+   function Test () {}
+
+   expect(isObject(Function)).toBe(false);
+   expect(isObject(1)).toBe(false);
+   expect(isObject('1')).toBe(false);
+   expect(isObject([])).toBe(false);
+   expect(isObject(true)).toBe(false);
+   expect(isObject(null)).toBe(false);
+   expect(isObject(undefined)).toBe(false);
+   expect(isObject(Symbol.iterator)).toBe(false);
+   expect(isObject(Test)).toBe(false);
 });
 
 test('combinePropNames should return chained prop names', () => {

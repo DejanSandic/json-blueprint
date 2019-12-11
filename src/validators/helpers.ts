@@ -9,6 +9,15 @@ export function isTypeConstructor (value: any): boolean {
 }
 
 /**
+ * Function which checks is the provided valuea an object
+ *
+ * @param { any } value value to be tested
+ */
+export function isObject (value: any): boolean {
+   return !!(value && !Array.isArray(value) && typeof value === 'object');
+}
+
+/**
  * Chains property names for nested object structures ( parent.child )
  * @param { string | undefined } parentProp
  * @param { string } prop

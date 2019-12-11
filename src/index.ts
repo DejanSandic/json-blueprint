@@ -1,5 +1,5 @@
-import validateObject from './validators/validateObject';
 import validateMap from './validators/validateMap';
+import { isObject, getType } from './validators/helpers';
 
 interface KeyValue {
    [key: string]: any;
@@ -13,11 +13,10 @@ class Blueprint {
       if (typeof name !== 'string') {
          throw new Error('Name of the blueprint is expected to be a string.');
       }
-      if (typeof blueprint === 'undefined') {
-         throw new Error('Type of blueprint is expected to be an object, undefined found instead.');
+      if (!isObject(blueprint)) {
+         throw new Error(`Type of blueprint is expected to be an object, ${getType(blueprint)} found instead.`);
       }
 
-      validateObject('blueprint', {}, blueprint);
       this._name = name;
       this._blueprint = blueprint;
    }
@@ -27,13 +26,12 @@ class Blueprint {
    }
 
    validate (data: KeyValue) {
-      if (typeof data === 'undefined') {
+      if (!isObject(data)) {
          throw new Error(
             `Type of data provided to the ${this._name}.validate() function ` +
-               'is expected to be an object, undefined found instead.'
+               `is expected to be an object, ${getType(data)} found instead.`
          );
       }
-      validateObject('data provided to the Blueprint.validate() function', {}, data);
       validateMap(this._name, this._blueprint, {}, data);
    }
 }
