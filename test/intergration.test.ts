@@ -1,7 +1,7 @@
 import Blueprint from '../src';
 
 test('Intergration test should not throw error.', () => {
-   const bp = new Blueprint({
+   const bp = new Blueprint('Person', {
       name: String,
       age: Number,
       verified: {
