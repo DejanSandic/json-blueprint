@@ -1,4 +1,4 @@
-import validateSymbol from '../src/validators/validateSymbol';
+import validateSymbol from '../../src/validators/validateSymbol';
 
 test('validateSymbol should not throw an error if the provided value is a symbol ', () => {
    expect(validateSymbol('testProp', {}, Symbol.iterator)).toBe(true);

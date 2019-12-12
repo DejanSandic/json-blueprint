@@ -1,17 +1,17 @@
-import validateList from '../src/validators/validateList';
-import * as validateListExport from '../src/validators/validateList';
+import validateList from '../../src/validators/validateList';
+import * as validateListExport from '../../src/validators/validateList';
 
 // Import inner functions used by the validateList()
-import validateValue from '../src/validators/validateValue';
-import validateObject from '../src/validators/validateObject';
-import validateArray from '../src/validators/validateArray';
-import validateMap from '../src/validators/validateMap';
+import validateValue from '../../src/validators/validateValue';
+import validateObject from '../../src/validators/validateObject';
+import validateArray from '../../src/validators/validateArray';
+import validateMap from '../../src/validators/validateMap';
 
 // Mock inner functions used by the validateList()
-jest.mock('../src/validators/validateValue');
-jest.mock('../src/validators/validateObject');
-jest.mock('../src/validators/validateArray');
-jest.mock('../src/validators/validateMap');
+jest.mock('../../src/validators/validateValue');
+jest.mock('../../src/validators/validateObject');
+jest.mock('../../src/validators/validateArray');
+jest.mock('../../src/validators/validateMap');
 
 test('validateList should throw an error if the blueprint for the property is not of a valid type.', () => {
    const fn1 = () => validateList('testProp', undefined, {}, [1]);

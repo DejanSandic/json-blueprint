@@ -1,4 +1,4 @@
-import { Any } from '../src/types';
+import { Any } from '../../src/types';
 
 describe('Any', () => {
    test('should be a function', () => {

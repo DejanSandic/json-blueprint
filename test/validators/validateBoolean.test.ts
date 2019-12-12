@@ -1,4 +1,4 @@
-import validateBoolean from '../src/validators/validateBoolean';
+import validateBoolean from '../../src/validators/validateBoolean';
 
 test('validateBoolean should not throw an error if the provided value is a boolean ', () => {
    expect(validateBoolean('testProp', {}, true)).toBe(true);

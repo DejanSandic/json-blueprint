@@ -1,4 +1,4 @@
-import { getType } from './helpers';
+import { getType } from '../helpers';
 
 interface ArrayProperties {
    minLength?: number;

@@ -1,15 +1,15 @@
-import validateMap from '../src/validators/validateMap';
-import * as validateMapExport from '../src/validators/validateMap';
+import validateMap from '../../src/validators/validateMap';
+import * as validateMapExport from '../../src/validators/validateMap';
 
 // Import inner functions used by the validateMap()
-import validateValue from '../src/validators/validateValue';
-import validateObject from '../src/validators/validateObject';
-import validateList from '../src/validators/validateList';
+import validateValue from '../../src/validators/validateValue';
+import validateObject from '../../src/validators/validateObject';
+import validateList from '../../src/validators/validateList';
 
 // Mock inner functions used by the validateMap()
-jest.mock('../src/validators/validateValue');
-jest.mock('../src/validators/validateObject');
-jest.mock('../src/validators/validateList');
+jest.mock('../../src/validators/validateValue');
+jest.mock('../../src/validators/validateObject');
+jest.mock('../../src/validators/validateList');
 
 const options = {};
 

@@ -1,4 +1,4 @@
-import { Is } from '../src/types';
+import { Is } from '../../src/types';
 
 /**
  * Is

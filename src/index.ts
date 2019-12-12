@@ -1,5 +1,5 @@
 import validateMap from './validators/validateMap';
-import { isObject, getType } from './validators/helpers';
+import { isObject, getType } from './helpers';
 
 interface KeyValue {
    [key: string]: any;

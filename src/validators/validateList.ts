@@ -1,6 +1,6 @@
 import validateValue from './validateValue';
 import validateMap from './validateMap';
-import { isTypeConstructor, isObject, getType } from './helpers';
+import { isTypeConstructor, isObject, getType } from '../helpers';
 
 // Only way for jest to track recursive calls is for the
 // validateList to be imported into its own scope

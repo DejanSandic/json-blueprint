@@ -1,4 +1,4 @@
-import validateObject from '../src/validators/validateObject';
+import validateObject from '../../src/validators/validateObject';
 
 test('validateObject should not throw an error if the provided value is an object', () => {
    expect(validateObject('testProp', {}, {})).toBe(true);

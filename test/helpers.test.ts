@@ -1,4 +1,4 @@
-import { isTypeConstructor, isObject, getType } from '../src/validators/helpers';
+import { isTypeConstructor, isObject, getType } from '../src/helpers';
 
 test('isTypeConstructor should return true', () => {
    expect(isTypeConstructor(String)).toBe(true);

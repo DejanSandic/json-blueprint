@@ -1,24 +1,24 @@
-import validateValue from '../src/validators/validateValue';
+import validateValue from '../../src/validators/validateValue';
 
 // Import inner functions used by the validateValue()
-import validateString from '../src/validators/validateString';
-import validateNumber from '../src/validators/validateNumber';
-import validateBoolean from '../src/validators/validateBoolean';
-import validateSymbol from '../src/validators/validateSymbol';
-import validateObject from '../src/validators/validateObject';
-import validateArray from '../src/validators/validateArray';
-import validateMap from '../src/validators/validateMap';
-import validateList from '../src/validators/validateList';
+import validateString from '../../src/validators/validateString';
+import validateNumber from '../../src/validators/validateNumber';
+import validateBoolean from '../../src/validators/validateBoolean';
+import validateSymbol from '../../src/validators/validateSymbol';
+import validateObject from '../../src/validators/validateObject';
+import validateArray from '../../src/validators/validateArray';
+import validateMap from '../../src/validators/validateMap';
+import validateList from '../../src/validators/validateList';
 
 // Mock inner functions used by the validateValue()
-jest.mock('../src/validators/validateString');
-jest.mock('../src/validators/validateNumber');
-jest.mock('../src/validators/validateBoolean');
-jest.mock('../src/validators/validateSymbol');
-jest.mock('../src/validators/validateObject');
-jest.mock('../src/validators/validateArray');
-jest.mock('../src/validators/validateMap');
-jest.mock('../src/validators/validateList');
+jest.mock('../../src/validators/validateString');
+jest.mock('../../src/validators/validateNumber');
+jest.mock('../../src/validators/validateBoolean');
+jest.mock('../../src/validators/validateSymbol');
+jest.mock('../../src/validators/validateObject');
+jest.mock('../../src/validators/validateArray');
+jest.mock('../../src/validators/validateMap');
+jest.mock('../../src/validators/validateList');
 
 test('validateValue should call validateString function if the provided constructor is String.', () => {
    validateValue('testProp', String, {}, 'Helo world');

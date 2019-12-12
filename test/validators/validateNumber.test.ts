@@ -1,4 +1,4 @@
-import validateNumber from '../src/validators/validateNumber';
+import validateNumber from '../../src/validators/validateNumber';
 
 test('validateNumber should not throw an error if the provided value is a number ', () => {
    expect(validateNumber('testProp', {}, 1)).toBe(true);

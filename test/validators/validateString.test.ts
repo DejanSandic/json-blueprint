@@ -1,4 +1,4 @@
-import validateString from '../src/validators/validateString';
+import validateString from '../../src/validators/validateString';
 
 test('validateString should not throw an error if the provided value is a string ', () => {
    expect(validateString('testProp', {}, 'string')).toBe(true);

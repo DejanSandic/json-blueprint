@@ -1,4 +1,4 @@
-import validateArray from '../src/validators/validateArray';
+import validateArray from '../../src/validators/validateArray';
 
 test('validateArray should not throw an error if the provided value is an array', () => {
    expect(validateArray('testProp', {}, [])).toBe(true);
