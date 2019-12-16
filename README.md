@@ -38,17 +38,24 @@ yarn:
 yarn add json-blueprint
 ```
 
+# Usage
 ```js
+// Import the library
 import Blueprint from 'json-blueprint';
 
-const bp = new Blueprint('Test', {...schema});
+// Create new blueprint
+const bp = new Blueprint('BlueprintName', {...schema});
 
 // or
-const bp = Blueprint.create({...schema});
+const bp = Blueprint.create('BlueprintName' {...schema});
+
+
+// Validate data
+bp.validate({...data})
 ```
 
 # Table of contents
--  [Strings](#strings)
+-  [String](#strings)
 -  [Number](#number)
 -  [Boolean](#boolean)
 -  [Object](#Object)
@@ -79,8 +86,8 @@ const bp = new Blueprint('Test', {
 
       // Additional validation funciton
       validate: (prop, value) => {
-         if (!value.includes('php')) {
-            throw new Error(`Property ${prop} is includes a bad word :-(`)
+         if (!value.includes('clown')) {
+            throw new Error('Clowns are scary');
          }
       },
 
@@ -158,7 +165,7 @@ const bp = new Blueprint('Test', {
    // Basic object
    roles: Object,
 
-   // Object of objects
+   // Object with defined properties
    hours: {
       partTime: Boolean,
       fullTime: Boolean,
@@ -182,7 +189,7 @@ const bp = new Blueprint('Test', {
       required: false
    },
 
-   // Object with options and defined items
+   // Object with options and defined properties
    salary: {
       type: Object,
       required: false,
@@ -311,25 +318,25 @@ const bp = new Blueprint('Test', {
 ```js
 import Blueprint from 'json-blueprint';
 
-// Define custom type
-function Happy (prop, value) {
+// Define custom type which checks is provided value truthy
+function Truthy (prop, value) {
    if (!value) {
-      throw new Error(`${prop} is not happy`);
+      throw new Error(`${prop} is not truthy`);
    }
 }
 
 // Create blueprint whcich implements custom type
-const happyBlueprint = new Blueprint('Test', {
+const bp = new Blueprint('Test', {
    person: {
-      happiness: Happy
+      happy: Truthy
    }
 });
 
 // Validate object
-happyBlueprint.validate({
+bp.validate({
    person: {
-      happiness: 0
-      // Test.person.happiness is not happy
+      happy: 0
+      // Test.person.happy is not truthy
    }
 })
 ```
@@ -340,7 +347,7 @@ Custom type with options
 import Blueprint from 'json-blueprint';
 
 // Define custom type
-function Happy (prop, value, options) {
+function Truthy (prop, value, options) {
    const {
       a, // true
       b, // 1
@@ -349,15 +356,15 @@ function Happy (prop, value, options) {
    } = options;
 
    if (!value) {
-      throw new Error(`${prop} is not happy`);
+      throw new Error(`${prop} is not truthy`);
    }
 }
 
 // Create blueprint whcich implements custom type
-const happyBlueprint = new Blueprint('Test', {
+const bp = new Blueprint('Test', {
    person: {
-      happiness: {
-         type: Happy,
+      happy: {
+         type: Truthy,
          a: true,
          b: 1,
          c: 'hello',
