@@ -1,6 +1,6 @@
 {
 	"name": "json-blueprint",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "JSON validation library",
 	"main": "dist/index.cjs.js",
 	"module": "dist/index.es.js",
@@ -25,6 +25,7 @@
 		"url": "https://github.com/DejanSandic/json-blueprint/issues"
 	},
 	"homepage": "https://github.com/DejanSandic/json-blueprint#readme",
+	"keywords": [ "json", "blueprint", "schema", "validation", "validate", "validator", "object", "types" ],
 	"devDependencies": {
 		"@types/jest": "^24.0.15",
 		"eslint": "^5.16.0",
